@@ -18,7 +18,7 @@ NC='\033[0m' # No Color
 CREATE_APP=false #path to source to deploy
 TARGET_ORG_ALIAS='' # Alias of authenticated Source Org to pull template from
 TEMPLATE_API_NAME='' # Name of package to retrieve
-PATH_TO_SOURCE='' #path to source to deploy
+PATH_TO_SOURCE='../sfdc-ea-demo-templates/force-app/main/default/waveTemplates' #path to source to deploy
 
 # Argument Usage
 print_usage() {
@@ -30,7 +30,7 @@ print_usage() {
     echo "    -u    alias of target org to deploy to"
     echo "    -t    template api name to deploy, should be same as folder name under waveTemplates/"
     echo "    -c    [optional] set to create app after source is deployed"
-    echo "    -p    [optional] overide path to source to deploy [eg. ../sfdc-ea-demo-templates/force-app]"
+    echo "    -p    [optional] overide path to source to deploy [eg. ../sfdc-ea-demo-templates/force-app/main/default/waveTemplates]"
     echo "e.g. `./scripts/deployTemplateNonScratch.sh -u targetSDO -t Key_Account_Management -p ../sfdc-ea-demo-templates/force-app`"
     echo
 }

@@ -109,15 +109,22 @@ then
     # Check app creation status
     echo "${MSG}$(date "+%Y-%m-%d %H:%M:%S")|[INFO] Checking status of app creation...${NC}"
     app_create_status="$(sfdx analytics:app:list | grep $TEMPLATE_API_NAME | sed 's/  /,/g' | cut -d ',' -f4)"
-        
-    if [ $app_create_status = "completedstatus" ];
-    then
-        echo "${MSG}$(date "+%Y-%m-%d %H:%M:%S")|[INFO] App Created with status: ${app_create_status}"
-    elif [ "$app_create_status" = "failedstatus" ];
-    then
-        echo "${ERROR}[ERROR] App Creation Failed.${NC}"
-        # TODO: Do clean up and delete created org
-        exit 1
+
+    if [[ ! -z $app_create_status ]]
+    then    
+        if [ $app_create_status = "completedstatus" ];
+        then
+            echo "${MSG}$(date "+%Y-%m-%d %H:%M:%S")|[INFO] App Created with status: ${app_create_status}"
+        elif [ "$app_create_status" = "failedstatus" ];
+        then
+            echo "${ERROR}[ERROR] App Creation Failed.${NC}"
+            # TODO: Do clean up and delete created org
+            exit 1
+        else
+            echo "${ERROR}[ERROR] Unexpected Status: ${app_create_status}"
+            # TODO: Do clean up and delete created org
+            exit 1
+        fi
     else
         echo "${ERROR}[ERROR] Unexpected Status: ${app_create_status}"
         # TODO: Do clean up and delete created org

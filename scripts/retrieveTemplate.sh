@@ -17,6 +17,7 @@ NC='\033[0m' # No Color
 #variables
 SOURCE_ORG_ALIAS='' # Alias of authenticated Source Org to pull template from
 PACKAGE_NAME='' # Name of package to retrieve
+API_VERSION='48.0'
 
 # Argument Usage
 print_usage() {
@@ -32,8 +33,9 @@ print_usage() {
     echo
 }
 
-while getopts 'd::p:u:' flag; do
+while getopts 'a::d::p:u:' flag; do
   case "${flag}" in
+    a) API_VERSION=="${OPTARG}";;
     d) DATASETS="${OPTARG}";;
     p) PACKAGE_NAME="${OPTARG}";;
     u) SOURCE_ORG_ALIAS="${OPTARG}";;
@@ -55,7 +57,7 @@ TEMP_FOLDER=sfdx_temp/${PACKAGE_NAME}_$TIMESTAMP
 mkdir -p $TEMP_FOLDER
 
 echo "${MSG}$(date "+%Y-%m-%d %H:%M:%S")|[INFO] Retrieving package, $PACKAGE_NAME from $SOURCE_ORG_ALIAS and unzipped to $TEMP_FOLDER.${NC}"
-sfdx force:mdapi:retrieve -u $SOURCE_ORG_ALIAS -r $TEMP_FOLDER -p $PACKAGE_NAME
+sfdx force:mdapi:retrieve -u $SOURCE_ORG_ALIAS -r $TEMP_FOLDER -p $PACKAGE_NAME -a $API_VERSION
  
  # uncompress retrieved zip
 unzip -o $TEMP_FOLDER/unpackaged.zip -d $TEMP_FOLDER
