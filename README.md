@@ -54,15 +54,16 @@ App in source org needs to be converted into a template and packaged first
 4. Go to Setup --> Manage Packages and create a new package with the Einstein Analytics assets. No need to upload. 
 
 #### Retrieve the source
-1. Run `./scripts/retrieveTemplate.sh -u [SOURCE ORG ALIAS] -p [PACKAGE NAME] -d [DATASETS optional]` e.g `./scripts/retrieveTemplate.sh -u shared-sales -p CLA_Demo -d "Account Cases"`
+1. Run `./scripts/retrieveTemplate.sh -u [SOURCE ORG ALIAS] -p [PACKAGE NAME] -a [APP API NAME containing datasets to include]` e.g `./scripts/retrieveTemplate.sh -u shared-sales -p CLA_Demo -a \"Customer_Lifecycle_Analytics_Demo\"`
 2. Once the script completes, the source for the selected packaged template will be available in the sfdx_temp folder. You will then have to manually move these folders into the `force-app/main/default` folder. There also a couple manual steps that need to be taken:
-    1. Move the `external_files` folder into `waveTemplates\[TEMPLATE API NAME]`
-    2. Move dataset XMD files into `external_files` from `waveTemplates\dataset_files` if datasets are not created by dataflow
-    3. Create datasets schema files, by using Create Dataset UI in Analytics Studio.
+    1. Move the `external_files` folder into `waveTemplates/[TEMPLATE API NAME]`
+    2. Move the folder under `data/analytics` into `force-app/main/default/`
+    3. Move dataset XMD files into `external_files` from `waveTemplates/dataset_files` if datasets are not created by dataflow
+    4. Create datasets schema files, by using Create Dataset UI in Analytics Studio.
         1. Create --> Dataset --> CSV File --> Upload File --> Next --> Make any changes if needed --> Back --> Data Schema File --> Download File
         2. Save file into same folder as CSV file. i.e. `../waveTemplates/[TEMPLATE API NAME]/external_files`
-    3. Rename any datasets names that end with a # and update references in dashboard json and template-info.json
-    4. Update template-info.json so that the external files are referenced along with the csv, schema and xmd
-    4. Fix dot notations in dashboard jsons where needed
+    5. Rename any datasets names that end with a # and update references in dashboard json and template-info.json
+    6. Update template-info.json so that the external files are referenced along with the csv, schema and xmd
+    7. Fix dot notations in dashboard jsons where needed
 3. Spin up a scratch org push into an non-scratch org to validate or deploy to a non-scratch org.
 

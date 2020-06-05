@@ -23,20 +23,19 @@ API_VERSION='48.0'
 print_usage() {
   echo
     echo "Usage:"
-    echo "  retrieveTemplapte.sh -u <SOURCE ORG ALIAS> -p <PACKAGE NAME> [ -d <DATASETS> ]"
+    echo "  retrieveTemplate.sh -u <SOURCE ORG ALIAS> -p <PACKAGE NAME> [ -a <APP API NAME> ]"
     
     echo "Arguments:"
     echo "    -u    alias of source org to retrieve from"
     echo "    -p    name of package containing templates assets to retrieve"
-    echo "    -d    [optional] space delimited list of dataset to extract with quotes for multiple. eg. DATASET_1 DATASET_2"
-    echo "e.g. scripts/retrieveTemplate.sh -u shared-sales -p CLA_Demo -d \"Accounts Cases\""
+    echo "    -a    [optional] name of app containing datasets to extract "
+    echo "e.g. scripts/retrieveTemplate.sh -u shared-sales -p CLA_Demo -a \"Customer_Lifecycle_Analytics_Demo\""
     echo
 }
 
-while getopts 'a::d::p:u:' flag; do
+while getopts 'a::p:u:' flag; do
   case "${flag}" in
-    a) API_VERSION=="${OPTARG}";;
-    d) DATASETS="${OPTARG}";;
+    a) APP_API_NAME="${OPTARG}";;
     p) PACKAGE_NAME="${OPTARG}";;
     u) SOURCE_ORG_ALIAS="${OPTARG}";;
     *) print_usage
@@ -57,24 +56,35 @@ TEMP_FOLDER=sfdx_temp/${PACKAGE_NAME}_$TIMESTAMP
 mkdir -p $TEMP_FOLDER
 
 echo "${MSG}$(date "+%Y-%m-%d %H:%M:%S")|[INFO] Retrieving package, $PACKAGE_NAME from $SOURCE_ORG_ALIAS and unzipped to $TEMP_FOLDER.${NC}"
-sfdx force:mdapi:retrieve -u $SOURCE_ORG_ALIAS -r $TEMP_FOLDER -p $PACKAGE_NAME -a $API_VERSION
+sfdx force:mdapi:retrieve -u $SOURCE_ORG_ALIAS -r $TEMP_FOLDER -p $PACKAGE_NAME 
  
  # uncompress retrieved zip
 unzip -o $TEMP_FOLDER/unpackaged.zip -d $TEMP_FOLDER
 
 echo "${MSG}$(date "+%Y-%m-%d %H:%M:%S")|[INFO] Package retrieved and uncompressed.${NC}"
 
-# download datasets as csvs if specified
-if [ -z "$DATASETS" ]
+# download datasets if specified
+if [ -z "$APP_API_NAME" ]
 then
   echo "${MSG}$(date "+%Y-%m-%d %H:%M:%S")|[INFO] No datasets specified.${NC}"
   exit 0
 else
+  echo "${MSG}$(date "+%Y-%m-%d %H:%M:%S")|[INFO] Extracting datasets from $APP_API_NAME...${NC}"
+  
   mkdir -p $TEMP_FOLDER/external_files
-  arr=("${(@s/ /)DATASETS}")
+  mkdir -p $TEMP_FOLDER/data/analytics/$APP_API_NAME
+
+  arr=(${(f)"$(sfdx force:data:soql:query  -u $SOURCE_ORG_ALIAS -q "SELECT DeveloperName FROM Edgemart WHERE InsightsApplication.DeveloperName='$APP_API_NAME'")"})
+
   for s in "${arr[@]}"; do
     echo "${MSG}$(date "+%Y-%m-%d %H:%M:%S")|[INFO] Downloading dataset: $s${NC}"
-    sfdx shane:analytics:dataset:download -u $SOURCE_ORG_ALIAS -t $TEMP_FOLDER/external_files -b 10000 -n $s  
+    sfdx shane:analytics:dataset:download -u $SOURCE_ORG_ALIAS -t $TEMP_FOLDER/data/analytics/$APP_API_NAME -b 10000 -n $s
   done
+
   echo "${MSG}$(date "+%Y-%m-%d %H:%M:%S")|[INFO] Datasets downloaded to $TEMP_FOLDER/external_files${NC}"
+
+  # sample data for template
+  for csv_file in $TEMP_FOLDER/data/analytics/$APP_API_NAME/*.csv; do
+      head -n 5000 $csv_file > $TEMP_FOLDER/external_files/$csv_file:t
+  done
 fi

@@ -90,3 +90,5 @@ then
     echo "${MSG}$(date "+%Y-%m-%d %H:%M:%S")|[INFO] Please be patient, it may take up to 15m${NC}"
     sfdx analytics:app:create -u $TARGET_ORG_ALIAS -t $TEMPLATE_ID -w 15
 fi
+
+echo "${MSG}$(date "+%Y-%m-%d %H:%M:%S")|[INFO] Completed${NC}"

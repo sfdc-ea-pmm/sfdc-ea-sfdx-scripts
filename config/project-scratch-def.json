@@ -17,9 +17,6 @@
     },
     "securitySettings": {
       "enableAuditFieldsInactiveOwner": true
-    },
-    "analyticsSettings": {
-      "replaceBlankMeasuresWithNulls": true
     }
   }
 }
