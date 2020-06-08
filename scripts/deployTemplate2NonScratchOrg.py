@@ -19,8 +19,7 @@ def run(args):
     logging.info(args)
 
     logging.info("Creating sfdx_temp folder...")
-    if not os.path.exists('sfdx_temp'):
-        os.mkdir("sfdx_temp")
+    os.makedirs("sfdx_temp", exist_ok=True)
     
     logging.info("Deploying static resources...")
     #os.system( ("sfdx force:source:deploy -u %s -p %s/staticresources" % (args.targetuseralias, args.path) ))
@@ -72,7 +71,7 @@ if __name__ == "__main__":
 
     # Add the arguments
     my_parser.add_argument('-u','--targetuseralias',required=True,type=str,help='username or alias for the target org; overrides default target org')
-    my_parser.add_argument('-t','--template',type=str,help='specify template (api name) to deploy, should be same as folder name under waveTemplates/.')
+    my_parser.add_argument('-t','--template',required=True,type=str,help='specify template (api name) to deploy, should be same as folder name under waveTemplates/.')
     my_parser.add_argument('-c','--createapp',default=False,action='store_true',help='create app after source is deployed')
     my_parser.add_argument('-p','--path',type=str,default='../sfdc-ea-demo-templates/force-app/main/default',help='overide source deploy path')
 

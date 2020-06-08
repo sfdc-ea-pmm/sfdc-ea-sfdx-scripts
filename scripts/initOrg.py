@@ -17,9 +17,8 @@ def run(args):
     logging.info('TIMESTAMP=%s' % TIMESTAMP)
     logging.info(args)
 
-    logging.info("Creating sfdx_temp folder...")
-    if not os.path.exists('sfdx_temp'):
-        os.mkdir("sfdx_temp")
+    logging.info("Creating sfdx_temp folder...")\
+    os.makedirs("sfdx_temp", exist_ok=True)
 
     # create scratch org
     logging.info(("Creating Scratch Org with Duration: %s..." % args.duration))
@@ -105,9 +104,9 @@ if __name__ == "__main__":
     my_parser = argparse.ArgumentParser(prog='initOrg',description='Initialize a Scratch Org for Einstein Analytics Template development')
 
     # Add the arguments
-    my_parser.add_argument('-t','--template',type=str,help='specify template (api name) to deploy, should be same as folder name under waveTemplates/.')
-    my_parser.add_argument('-s','--sample',default=False,action='store_true',help='include sample data in scratch org')
-    my_parser.add_argument('-d','--duration',type=int,default=1,choices=range(1, 30),help='set scratch org duration')
-    my_parser.add_argument('-p','--path',type=str,default='../sfdc-ea-demo-templates/force-app/main/default',help='overide source deploy path')
+    my_parser.add_argument('-t','--template',type=str, help='specify template (api name) to deploy, should be same as folder name under waveTemplates/.')
+    my_parser.add_argument('-s','--sample',default=False,action='store_true', help='include sample data in scratch org')
+    my_parser.add_argument('-d','--duration',type=int,default=1,choices=range(1, 30), help='set scratch org duration')
+    my_parser.add_argument('-p','--path',type=str,default='../sfdc-ea-demo-templates/force-app/main/default', help='overide source deploy path')
 
     run(my_parser.parse_args())
