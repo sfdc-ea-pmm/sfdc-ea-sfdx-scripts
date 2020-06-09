@@ -22,10 +22,10 @@ def run(args):
     os.makedirs("sfdx_temp", exist_ok=True)
     
     logging.info("Deploying static resources...")
-    #os.system( ("sfdx force:source:deploy -u %s -p %s/staticresources" % (args.targetuseralias, args.path) ))
+    os.system( ("sfdx force:source:deploy -u %s -p %s/staticresources" % (args.targetuseralias, args.path) ))
 
     logging.info("Deploying wave templates...")
-    #os.system( ("sfdx force:source:deploy -u %s -p %s/waveTemplates/%s" % (args.targetuseralias, args.path, args.template) ))
+    os.system( ("sfdx force:source:deploy -u %s -p %s/waveTemplates/%s" % (args.targetuseralias, args.path, args.template) ))
 
     # logging.info("Uploading additional data...")
 

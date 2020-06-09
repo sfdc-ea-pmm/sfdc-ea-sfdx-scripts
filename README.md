@@ -79,5 +79,5 @@ App in source org needs to be converted into a template and packaged first
     4. Update template-info.json so that the external files are referenced along with the csv, schema and xmd
     5. Fix dot notations in dashboard json where needed
 3. Test the template by deploying the new template. Following sections above:
-    * Spin up a scratch org i.e. `python3 scripts/initOrg.py -t Key_Account_Managaement'` or 
+    * Spin up a scratch org i.e. `python3 scripts/initOrg.py -t Key_Account_Management'` or 
     * Deploy into an non-scratch org i.e. `python3 scripts/deployTemplate2NonScratchOrg.py -u targetSDO -t Key_Account_Management`
