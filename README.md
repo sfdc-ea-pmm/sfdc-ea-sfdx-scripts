@@ -53,7 +53,7 @@ Install all dependencies by running: `pip3 install -r requirements.txt`
 6. Sync code with git
 
 ### Deploy template to non scratch org
-1. Use `sfdx force:auth:web:login --setalias [ALIAS]` to add your non scratch org (First time only)
+1. Use `sfdx force:auth:web:login -a [ALIAS]` to add your non scratch org (First time only)
 2. Run `python3 scripts/deployTemplate2NonScratchOrg.py -u <TARGET ORG ALIAS> -t <TEMPLATE API NAME>` to specified template into target org or Use the command `SFDX: Deploy Source to Org` if using VS Code
     e.g. `python3 scripts/deployTemplate2NonScratchOrg.py -u targetSDO -t Key_Account_Management`
 
