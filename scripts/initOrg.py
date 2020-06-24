@@ -17,7 +17,7 @@ def run(args):
     logging.info('TIMESTAMP=%s' % TIMESTAMP)
     logging.info(args)
 
-    logging.info("Creating sfdx_temp folder...")\
+    logging.info("Creating sfdx_temp folder...")
     os.makedirs("sfdx_temp", exist_ok=True)
 
     # create scratch org
