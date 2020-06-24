@@ -39,18 +39,21 @@ Install all dependencies by running: `pip3 install -r requirements.txt`
 
 ## Usage
 ### Develop with Scratch Org
-1. Clone this repo 
-2. Fork (or clone)  or create your own source code folder.
-2. Set `path` attibute in `sfdx-project.json` to `../sfdc-ea-demo-templates/force-app` if different.
-2. Run `python3 scripts/initOrg.py -t [TEMPLATE_API_NAME]`, (where TEMPLATE_API_NAME is the template you want to work on) to create a new Scratch Org with assets from repo. (Scratch Orgs are defaulted to **expire in 1 day**, override with argument `./initOrg.py -d 7`)
-3. Do your development in the scratch org or VS Code.
+1. Clone this repo
+2. Fork (or clone) or create your own source code folder.
+3. Set `path` attibute in `sfdx-project.json` if not using `../sfdc-ea-demo-templates/force-app`
+4. Set `adminEmail` in `project-scratch-def.json`
+5. Run `python3 scripts/initOrg.py -t [TEMPLATE_API_NAME]`, (where TEMPLATE_API_NAME is the template you want to work on) to create a new Scratch Org with assets from repo. (Scratch Orgs are defaulted to **expire in 1 day**, override with argument `./initOrg.py -d 7`)
+
+### Development
+1. Do your development in the scratch org or VS Code.
     * Edit dashboards in the org and pull source to local (see step 4ii below)
     * Edit template metadata in VS Code and push source to scratch org and update (see step 4i below)
-4. Use the commands 
+2. Use the commands 
     * `SFDX: Push Source to Org` (VS Code) or `sfdx force:source:push` (Salesforce CLI) to push changes from local into the Scratch Org. For example changes to template metadata (i.e. template-info.json)
     * `SFDX: Pull Source from Org` (VS Code) or `sfdx force:source:pull` (Salesforce CLI) to pull changes down from Scratch Org to local. For example, dashboard edits.
-5. Run `./scripts/updateTemplate.sh` to update template with latest changes
-6. Sync code with git
+3. Run `./scripts/updateTemplate.sh` to update template with latest changes
+4. Sync code with git
 
 ### Deploy template to non scratch org
 1. Use `sfdx force:auth:web:login -a [ALIAS]` to add your non scratch org (First time only)
