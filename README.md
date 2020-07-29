@@ -67,9 +67,10 @@ Use the following to convert an existing app to a template to commit to source c
 App in source org needs to be converted into a template and packaged first
 1. Run `sfdx analytics:app:list -u [SOURCE ORG ALIAS]` to get the list of the apps
 2. If the app was created from a template, you'll need to first decouple with `sfdx analytics:app:decouple -u [SOURCE ORG ALIAS] -f [FOLDER ID OF APP] -t [TEMPLATE ID]`
-3. Run `sfdx analytics:template:create -u [SOURCE ORG ALIAS] -f [FOLDER ID OF APP]` to create a new template
+3. All assets (i.e. datasets, lenses, dashboards) should be moved into the same app.
+4. Run `sfdx analytics:template:create -u [SOURCE ORG ALIAS] -f [FOLDER ID OF APP]` to create a new template
     * Or run `sfdx analytics:template:update -u [SOURCE ORG ALIAS] -t [TEMPLATE ID TO UPDATE]` to update an existing template
-4. Go to Setup --> Manage Packages and create a new package with the Einstein Analytics assets. No need to upload. 
+5. Go to Setup --> Manage Packages and create a new package with the Einstein Analytics assets. No need to upload. 
 
 #### Retrieve the source
 1. Run `python3 scripts/retrieveTemplate.py -u [SOURCE ORG ALIAS] -p [PACKAGE NAME] -a [APP API NAME containing datasets to include]` e.g `python3 scripts/retrieveTemplate.sh -u shared-sales -p CLA_Demo -a "Customer_Lifecycle_Analytics_Demo"`

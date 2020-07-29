@@ -1,11 +1,10 @@
 ##################################################################################################################
-# Script to create source from template
+# Script to download all datasets from app
 # Created by: Terrence Tse, ttse@salesforce.com
-# Last Updated: Jun 4, 2020
+# Last Updated: Jul 16, 2020
 ##################################################################################################################
 
 import json,sys,csv,os,re,argparse,logging,requests,pandas,random
-from zipfile import ZipFile
 
 from datetime import datetime
 
@@ -21,26 +20,17 @@ def run(args):
     logging.info(args)
 
     logging.info("Creating sfdx_temp folder...")
-    temp_folder = ( "sfdx_temp/%s_%s" % (TIMESTAMP,args.package) )
+    temp_folder = ( "sfdx_temp/%s_%s" % (TIMESTAMP,args.app) )
     os.makedirs(temp_folder, exist_ok=True)
     
-    logging.info("Retrieving package, %s from %s and unzipped to %s." % (args.package, args.targetuseralias, temp_folder))
-    os.system( ("sfdx force:mdapi:retrieve -u %s -r %s -p %s" % (args.targetuseralias, temp_folder, args.package)) )
-
-    with ZipFile(('%s/unpackaged.zip' % temp_folder), 'r') as zipObj:
-        # Extract all the contents of zip file in current directory
-        zipObj.extractall(temp_folder)
-
-    logging.info("Package retrieved and uncompressed.")
-
     if args.app:
         logging.info("Extracting datasets from %s" % args.app)
 
         fulldata_path = ("%s/fulldata" % temp_folder)
-        externalfiles_path = ( "%s/%s/waveTemplates/%s/external_files" % (temp_folder,args.package, args.app) )
+        sampledata_path = ( "%s/sampledata" % temp_folder)
 
         os.makedirs(fulldata_path, exist_ok=True)
-        os.makedirs(externalfiles_path, exist_ok=True)
+        os.makedirs(sampledata_path, exist_ok=True)
 
          # get template ID
         stream = os.popen( ("sfdx force:data:soql:query -u %s -q \"SELECT DeveloperName FROM Edgemart WHERE InsightsApplication.DeveloperName='%s'\"" % (args.targetuseralias, args.app) ))
@@ -53,13 +43,13 @@ def run(args):
                 os.system( ("sfdx shane:analytics:dataset:download -u %s -t %s -b %d -n %s" % (args.targetuseralias, fulldata_path, args.batch, row)) )
 
                 fullcsv = '%s/%s.csv' % (fulldata_path, row)
-                samplecsv = '%s/%s.csv' % (externalfiles_path, row)
+                samplecsv = '%s/%s.csv' % (sampledata_path, row)
 
                 # Count the lines or use an upper bound
                 num_lines = sum(1 for l in open(fullcsv))
                 logging.debug('CSV Numlines: %d' % num_lines)
                 
-                if num_lines > 10000:
+                if args.sample and num_lines > 10000:
                     # Sample size - in this case ~10%
                     size = int(10000)
                     logging.debug('Sample Size: %d' % size)
@@ -73,7 +63,7 @@ def run(args):
                 else:
                     os.system( ("cp %s %s" % (fullcsv, samplecsv)) )
        
-        logging.info("Full datasets downloaded to %s with Sample datasets in %s" % (fulldata_path, externalfiles_path) )
+        logging.info("Full datasets downloaded to %s with Sample datasets in %s" % (fulldata_path, sampledata_path) )
 
 if __name__ == "__main__":
     logging.basicConfig(format='%(asctime)s - %(levelname)s - %(message)s',datefmt='%Y-%m-%d %I:%M:%S',level=logging.DEBUG)
@@ -83,7 +73,7 @@ if __name__ == "__main__":
 
     # Add the arguments
     my_parser.add_argument('-u','--targetuseralias',required=True,type=str,help='username or alias for the target org; overrides default target org')
-    my_parser.add_argument('-p','--package',required=True,type=str,help='name of package containing templates assets to retrieve')
+    my_parser.add_argument('-s','--sample',type=bool,default=False,help='samples datasets')
     my_parser.add_argument('-a','--app',type=str,help='app containing datasets to extract')
     my_parser.add_argument('-b','--batch',type=int, default=10000,help='batch size for dataset extract')
 
