@@ -58,7 +58,7 @@ Install all dependencies by running: `pip3 install -r requirements.txt`
 ### Deploy template to non scratch org
 1. Use `sfdx force:auth:web:login -a [ALIAS]` to add your non scratch org (First time only)
 2. Run `python3 scripts/deployTemplate2NonScratchOrg.py -u <TARGET ORG ALIAS> -t <TEMPLATE API NAME>` to specified template into target org or Use the command `SFDX: Deploy Source to Org` if using VS Code
-    e.g. `python3 scripts/deployTemplate2NonScratchOrg.py -u targetSDO -t Key_Account_Management`
+    e.g. `python3 scripts/deployTemplate2NonScratchOrg.py -u targetSDO -t Key_Account_Management` (target folder name of the template, under force-app/main/default/waveTemplates)
 
 ### Retreive template from a source org
 Use the following to convert an existing app to a template to commit to source control or with the `deployTemplate2NonScratchOrg.py` script this can also be used to migrate assets from one org to another.
@@ -84,4 +84,4 @@ App in source org needs to be converted into a template and packaged first
     5. Fix dot notations in dashboard json where needed
 3. Test the template by deploying the new template. Following sections above:
     * Spin up a scratch org i.e. `python3 scripts/initOrg.py -t Key_Account_Management'` or 
-    * Deploy into an non-scratch org i.e. `python3 scripts/deployTemplate2NonScratchOrg.py -u targetSDO -t Key_Account_Management`
+    * Deploy into an non-scratch org i.e. `python3 scripts/deployTemplate2NonScratchOrg.py -u targetSDO -t Key_Account_Management` (target folder name of the template, under force-app/main/default/waveTemplates)
