@@ -15,7 +15,7 @@ Before trying the steps detailed here, you need the following:
 ### Salesforce CLI
 1. Install Salesforce CLI from https://developer.salesforce.com/tools/sfdxcli. Follow the instructions on that page to download.
 2. Open a terminal
-    1. Install the Analytics plugin by running the command ` `
+    1. Install the Analytics plugin by running the command `sfdx plugins:install @salesforce/analytics`
     2. Install shane-sfdx-plugins for additional functionality `sfdx plugins:install shane-sfdx-plugins`
 3. Authorize a dev hub `sfdx force:auth:web:login -d -a [ALIAS]`
     1. Login to a dev hub and you can close the window
