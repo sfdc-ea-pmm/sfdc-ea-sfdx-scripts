@@ -45,9 +45,14 @@ def run(args):
          # get template ID
         stream = os.popen( ("sfdx force:data:soql:query -u %s -q \"SELECT DeveloperName FROM Edgemart WHERE InsightsApplication.DeveloperName='%s'\"" % (args.targetuseralias, args.app) ))
         output = stream.read().splitlines()
+        logging.info("Datasets to retrieve:")
         logging.debug(output)
 
+        output2 = []
         for row in output:
+            output2.append(row.strip())
+
+        for row in output2:
             if not (row.startswith("DEVELOPERNAME") or row.startswith("───") or row.startswith("Total number of records")):
                 logging.info("Downloading dataset: %s" % row)
                 os.system( ("sfdx shane:analytics:dataset:download -u %s -t %s -b %d -n %s" % (args.targetuseralias, fulldata_path, args.batch, row)) )

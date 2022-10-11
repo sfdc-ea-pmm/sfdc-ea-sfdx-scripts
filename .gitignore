@@ -8,3 +8,4 @@ package-lock.json
 **/force-app/main/default/contentassets
 **/force-app/main/default/roles
 **/force-app/main/default/wave
+.sf/config.json
