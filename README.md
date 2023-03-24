@@ -21,7 +21,7 @@ Before trying the steps detailed here, you need the following:
     1. Login to a dev hub and you can close the window
 4. Authorize any additional orgs with `sfdx force:auth:web:login -a [ALIAS]`
     1. Login to org and you can close the window
-5. Check your authorized orgs by running `sfdx force:org:list`
+5. Check your authorized orgs by running `sfdx org:list`
 
 ### Python 3
 * Python version 3.6 installed locally. See the installation guides for 
