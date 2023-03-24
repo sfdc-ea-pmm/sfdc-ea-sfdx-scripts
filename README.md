@@ -74,7 +74,9 @@ App in source org needs to be converted into a template and packaged first
 
 #### Retrieve the source
 1. Run `python3 scripts/retrieveTemplate.py -u [SOURCE ORG ALIAS] -p [PACKAGE NAME] -a [APP API NAME containing datasets to include]` e.g `python3 scripts/retrieveTemplate.sh -u shared-sales -p CLA_Demo -a "Customer_Lifecycle_Analytics_Demo"`
+    
     NOTE: If this command fails with an error saying: `ERROR running force:mdapi:retrieve:  UNKNOWN_EXCEPTION: An unexpected error occurred. Please include this ErrorId if you contact support: 368175077-200340 (794611615)` and `FileNotFoundError: [Errno 2] No such file or directory`, the template + package may be corrupt. To avoid this, decouple the template from the app in analytics studio, then delete the template, and create it again. After this, add it again to the package in Setup -> Package Manager
+    
 2. Once the script completes, the source for the selected packaged template will be available in the sfdx_temp folder. There also a couple manual steps that need to be taken:
     1. Move dataset XMD files into `external_files` from `waveTemplates/dataset_files` if datasets are not created by dataflow
     2. Create datasets schema files, by using Create Dataset UI in Analytics Studio.
